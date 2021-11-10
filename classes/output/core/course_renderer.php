@@ -780,6 +780,10 @@ class course_renderer extends \core_course_renderer {
             if (!empty($engagementmeta)) {
                 $engagementstr = implode(', ', $engagementmeta);
 
+                if (!empty($meta->groupname)) {
+                    $engagementstr .= sprintf(' (%s)', $meta->groupname);
+                }
+
                 $params = array(
                     'action' => 'grading',
                     'id' => $mod->id,
