@@ -96,7 +96,7 @@ class activity {
             $submitselect = '',
             $submissionnotrequired = false
             ) {
-        global $USER;
+        global $USER, $DB;
 
         $courseid = $mod->course;
 
@@ -155,6 +155,8 @@ class activity {
                     $meta->numparticipants = self::course_participant_count($courseid, $mod);
                 }
             }
+
+            $meta->groupname = self::get_active_group_name($courseid);
 
         } else {
             // Student - useful student meta data - only display if activity is available.
@@ -365,6 +367,8 @@ class activity {
 
         static $modtotalsbyid = array();
 
+        $extraselect .= self::get_extraselect_active_group($courseid);
+
         if (!isset($modtotalsbyid[$maintable][$courseid])) {
             // Results are not cached, so lets get them.
 
@@ -406,7 +410,9 @@ class activity {
         $coursemodulecontext = \context_module::instance($mod->id);
         $course = get_course($courseid);
         $assign = new \assign($coursemodulecontext, $mod, $course);
-        $activitygroup = 0; // No current group.
+
+        $activitygroup = self::get_active_group($courseid);
+
         $instance = $assign->get_default_instance();
         if ($instance->teamsubmission) {
             $participants = $assign->count_teams($activitygroup);
@@ -420,6 +426,31 @@ class activity {
             'submissions' => $assign->count_submissions_with_status($submitted, $activitygroup),
             'ungraded' => $assign->count_submissions_need_grading($activitygroup)
         );
+    }
+
+    protected static function get_active_group($courseid) {
+        global $SESSION;
+
+        if (!empty($SESSION->activegroup[$courseid]['aag'])) {
+            return current($SESSION->activegroup[$courseid]['aag']);
+        }
+
+        return 0;
+    }
+
+    protected static function get_active_group_name($courseid) {
+        global $DB;
+
+        static $id = 0;
+        static $name = '';
+
+        if ($id !== $courseid || empty($name)) {
+            $id = $courseid;
+            $groupid = self::get_active_group($courseid);
+            $name = $DB->get_field('groups', 'name', ['id' => $groupid]);
+        }
+
+        return $name;
     }
 
     /**
@@ -454,6 +485,26 @@ class activity {
             }
         }
         return 0;
+    }
+
+    protected static function get_extraselect_active_group($courseid) {
+        global $DB;
+
+        $groupid = self::get_active_group($courseid);
+
+        if (!empty($groupid)) {
+            $users = $DB->get_fieldset_select(
+                'groups_members',
+                'userid',
+                sprintf('groupid = "%d"', $groupid)
+            );
+
+            if (!empty($users)) {
+                return sprintf(' AND sb.userid IN (%s) ', implode(', ', $users));
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -876,7 +927,8 @@ class activity {
             }
 
             $context = \context_course::instance($courseid);
-            $users = get_enrolled_users($context, '', 0, 'u.id', null, 0, 0, true);
+            $groupid = self::get_active_group($courseid);
+            $users = get_enrolled_users($context, '', $groupid, 'u.id', null, 0, 0, true);
             $users = array_keys($users);
             $alluserroles = get_users_roles($context, $users, false);
 

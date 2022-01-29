@@ -165,4 +165,9 @@ class activity_meta {
      * @var int $numparticipants - number of participants.
      */
     public $numparticipants = 0;
+
+    /**
+     * @var string $groupname - active group name (if selected).
+     */
+    public $groupname = '';
 }
