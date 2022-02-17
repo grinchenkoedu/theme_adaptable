@@ -65,7 +65,7 @@ if ($ADMIN->fulltree) {
     $description = get_string('standardscreenwidthdesc', 'theme_adaptable');
     $choices = array(
         'standard' => '1920px',
-        'narrow' => '1000px'
+        'narrow' => '1600px'
     );
     $setting = new admin_setting_configselect($name, $title, $description, 'standard', $choices);
     $page->add($setting);
