@@ -71,6 +71,7 @@ if ($ADMIN->fulltree) {
     include(dirname(__FILE__) . '/settings/templates.php');
     include(dirname(__FILE__) . '/settings/user.php');
     include(dirname(__FILE__) . '/settings/custom_css.php');
+    include(dirname(__FILE__) . '/settings/video_popup.php');
 }
 $ADMIN->add('theme_adaptable', $asettings);
 require(dirname(__FILE__) . '/settings/importexport_settings.php');

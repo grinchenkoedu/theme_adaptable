@@ -85,4 +85,37 @@ jQuery(document).ready(function($) {
             });
         }
     }
+
+    let videoPopup = $('#adaptable_video_popup');
+
+    if (videoPopup.length) {
+        let time = videoPopup.data('time').match(/(\d+)\:(\d+)/);
+
+        if (time) {
+            let hours = parseInt(time[1]);
+            let minutes = parseInt(time[2]);
+
+            if ((new Date()).getHours() <= hours) {
+                let video = document.getElementById('adaptable_video_popup_video');
+
+                setInterval(function() {
+                    let date = new Date();
+
+                    if (date.getHours() === hours && date.getMinutes() === minutes) {
+                        videoPopup.show();
+                        video.play();
+                    } else {
+                        videoPopup.hide();
+                        video.pause();
+                    }
+                }, 1000);
+
+                $('#adaptable_video_popup_sound').click(function () {
+                    video.muted = false;
+                    video.volume = 0.2;
+                    $(this).hide();
+                });
+            }
+        }
+    }
 });

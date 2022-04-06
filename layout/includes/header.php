@@ -150,7 +150,15 @@ echo $OUTPUT->standard_top_of_body_html();
 
 // Development or wrong moodle version alert.
 // echo $OUTPUT->get_dev_alert();.
+//
 ?>
+
+<?php if ($PAGE->theme->settings->videopopupenabled): ?>
+<div id="adaptable_video_popup" style="display: none" data-time="<?php echo $PAGE->theme->settings->videopopuptime; ?>">
+    <video src="<?php echo $PAGE->theme->settings->videopopupurl; ?>" id="adaptable_video_popup_video" muted></video>
+    <button type="button" id="adaptable_video_popup_sound">Увімкнути звук</button>
+</div>
+<?php endif; ?>
 
 <div id="page-wrapper">
     <div id="page" class="<?php echo "$setfull $showiconsclass $standardscreenwidthclass"; ?>">
