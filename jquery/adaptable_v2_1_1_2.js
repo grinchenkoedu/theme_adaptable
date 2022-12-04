@@ -101,6 +101,9 @@ jQuery(document).ready(function($) {
                 setInterval(function() {
                     let date = new Date();
 
+                    console.log('Current: ' + date.getHours() + ':' + date.getMinutes());
+                    console.log('Target: ' + hours + ':' + minutes);
+
                     if (date.getHours() === hours && date.getMinutes() === minutes) {
                         videoPopup.show();
                         video.play();

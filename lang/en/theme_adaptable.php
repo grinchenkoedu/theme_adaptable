@@ -1915,3 +1915,13 @@ $string['printmargin'] = 'Margin';
 $string['printmargindesc'] = 'Set the margin.';
 $string['printlineheight'] = 'Line height';
 $string['printlineheightdesc'] = 'Set the line height.';
+
+$string['videopopup'] = 'Video pop-up';
+$string['videopopuptime'] = 'Video pop-up time';
+$string['videopopupdescription'] = 'Video pop-up';
+$string['videopopupheading'] = 'Video pop-up';
+$string['videopopupenabled'] = 'Video pop-up enabled';
+$string['videopopupurl'] = 'Video URL';
+$string['videopopupurldesc'] = 'Video URL';
+$string['videopopupenableddesc'] = 'Enable or disable the video pop-up';
+$string['videopopuptimedesc'] = 'Time to show the video pop-up';
